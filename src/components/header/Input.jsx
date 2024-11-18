@@ -22,6 +22,8 @@ const Input = React.forwardRef( function Input({
         ref={ref} 
         {...props}
         id={id} />
+        {/* //the same id is put for label also and input 
+        when user clickes on label cursur comes to input field */}
      </div>
     )
 })
