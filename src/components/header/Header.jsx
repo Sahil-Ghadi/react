@@ -1,9 +1,9 @@
 import React from 'react'
 import {Container,Logo, LogoutButton} from '../index'
 
-import { Link } from 'react-router-dom'
+import { Link,useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+
 
 const Header = () => {
   const authStatus = useSelector((state) => state.auth.status)
@@ -13,7 +13,7 @@ const Header = () => {
     {
       name:"Home",
       slug: "/",
-      active: authStatus,
+      active: true,
     },
     {
       name:"Login",

@@ -10,7 +10,7 @@ const Home = () => {
             setPosts(posts.documents)
         }
       })
-    }, [third])
+    }, [])
     
     if(posts.length === 0){
         return (
@@ -32,8 +32,7 @@ const Home = () => {
                 <div className='flex flex-wrap'>
                     {posts.map((post)=> (
                         <div key={post.$id} className='p-2 w-1/4'>
-                            {/* <Postcard post={post}/> */}
-                            <Postcard {...post}/>
+                            <Postcard post={post}/>
                         </div>
                     ))}
                 </div>

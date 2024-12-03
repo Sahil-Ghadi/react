@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     status: false,
-    userData: null,
+    userData: null
 }
 //to check user
 const authSlice = createSlice({
@@ -11,7 +11,7 @@ const authSlice = createSlice({
     reducers: {
         login: (state,action) => {
             state.status = true;
-            state.userData = action.payload;
+            state.userData = action.payload.userData;
         },
         logout: (state) => {
             state.status = false;
