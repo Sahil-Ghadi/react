@@ -12,7 +12,6 @@ import Postcard from "./Postcard"
 import SelectBtn from "./SelectBtn"
 import SignUp from "./SignUp"
 import Input from "./Input";
-
 export {
     Header,
     Footer,

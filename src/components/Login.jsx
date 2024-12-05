@@ -1,6 +1,6 @@
 import React,{useState} from 'react'
 import { Link,useNavigate } from 'react-router-dom'
-import { login as authLogin } from '../../store/authSlice.js'
+import { login as authLogin } from '../store/authSlice'
 import {Button,Logo,Input} from './index'
 import { useDispatch } from 'react-redux'
 import authService from '../appwrite/auth'
@@ -42,7 +42,7 @@ function Login() {
                         to="/signup"
                         className="font-medium text-primary transition-all duration-200 hover:underline"
                     >
-                        Sign Up
+                        Login Up
                     </Link>
         </p>
          {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
@@ -74,9 +74,8 @@ function Login() {
                 />
                 <Button 
                 type="submit" 
-                className='w-full'>Sign In</Button>
+                className='w-full'>Login In</Button>
             </div>
-
          </form>
       </div>
     </div>
