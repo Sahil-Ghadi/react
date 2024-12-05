@@ -1,5 +1,6 @@
 import conf from "../conf/conf";
 import { Client,Databases,Storage,Query } from "appwrite";
+import { ID } from "appwrite";
 
 export class Service{
     client= new Client();
@@ -8,18 +9,20 @@ export class Service{
 
     constructor(){
         this.client
-        .setProject(conf.appwriteProjectID)
+        .setProject(conf.appwriteProjectId)
         .setEndpoint(conf.appwriteUrl);
-        
         this.databases = new Databases(this.client);
         this.bucket = new Storage(this.client);
     }
 
-    async createPost({title,slug,content,featuredImage,status,userId}){
+    async createPost({title,slug,content,featuredImage,status,userID}){
         try {
+            if (!title || !slug || !content || !status || !userID) {
+                throw new Error("Missing required fields for post creation");
+            }
             return await this.databases.createDocument(
-                conf.appwriteDatabaseID,
-                conf.appwriteCollectiontID,
+                conf.appwriteDatabaseId,
+                conf.appwriteCollectionId,
                 slug,
                 //here slug is used as document ID
                 {
@@ -27,8 +30,8 @@ export class Service{
                     content,
                     featuredImage,
                     status,
-                    userId
-                })
+                    userID
+                },)
         } catch (error) {
             console.log("Appwrite serive :: createPost :: error", error);
         }
@@ -38,8 +41,8 @@ export class Service{
     //here we take doc Id as first parameter as it is reqired
     try {
         return await this.databases.updateDocument(
-            conf.appwriteDatabaseID,
-            conf.appwriteCollectiontID,
+            conf.appwriteDatabaseId,
+            conf.appwriteCollectionId,
             slug,
             {
                 title,
@@ -55,8 +58,8 @@ export class Service{
     async deletePost(slug){
         try {
              await this.databases.deleteDocument(
-                conf.appwriteDatabaseID,
-                conf.appwriteCollectiontID,
+                conf.appwriteDatabaseId,
+                conf.appwriteCollectionId,
                 slug
             )
             return true
@@ -70,8 +73,8 @@ export class Service{
     async getPost(slug){
         try {
             return await this.databases.getDocument(
-                conf.appwriteDatabaseID,
-                conf.appwriteCollectiontID,
+                conf.appwriteDatabaseId,
+                conf.appwriteCollectionId,
                 slug
             )
         } catch (error) {
@@ -83,23 +86,22 @@ export class Service{
     async getPosts(queries = [Query.equal("status","active")]){
         try {
             return await this.databases.listDocuments(
-                conf.appwriteDatabaseID,
-                conf.appwriteCollectiontID,
-                queries
+                conf.appwriteDatabaseId,
+                conf.appwriteCollectionId,
+                queries,
             )
         } catch (error) {
             console.log("Appwrite serive :: getPosts :: error", error);
             return false;
         }
     }
-
     //file upload method
 
     async uploadFile(file){
         try {
             //order of parameters is important
             return await this.bucket.createFile(
-                conf.appwriteBucketID,
+                conf.appwriteBucketId,
                 ID.unique(),
                 file,
             )
@@ -108,12 +110,12 @@ export class Service{
             return false
         }
     }
-    async deleteFile(fileID){
+    async deleteFile(fileId){
         try {
             //order of parameters is important
             await this.bucket.deleteFile(
-                conf.appwriteBucketID,
-                fileID,
+                conf.appwriteBucketId,
+                fileId,
             )
             return true
         } catch (error) {
@@ -122,12 +124,19 @@ export class Service{
         }
     }
    
-    getFilePreview(fileID){
+    getFilePreview(fileId){
         //we get a url here
-        return this.bucket.getFilePreview(
-            conf.appwriteBucketID,
-            fileID
-        )
+        try {
+            return this.bucket.getFilePreview(
+                conf.appwriteBucketId,
+                fileId,
+            )
+        } catch (error) {
+            if (!fileId) {
+                console.log("Missing required fileId for getFilePreview");
+            }
+        }
+       
     }
 }
 
