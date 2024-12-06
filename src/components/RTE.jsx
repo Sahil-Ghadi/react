@@ -4,7 +4,6 @@ import { Controller } from 'react-hook-form'
 import conf from '../conf/conf.js'
 
 export default function RTE({name, control, label, defaultValue = ""}) {
-  const apiKey = conf.tinymceApiKey;
   return (
     <div className='w-full'>
       {label && <label className='inline-block mb-1 pl-1'>{label}</label>}
@@ -14,8 +13,8 @@ export default function RTE({name, control, label, defaultValue = ""}) {
       control={control}
       render={({field: {onChange}})=>(
         <Editor
-        apiKey
-        initialValue:defaultValue
+        apiKey={conf.tinymceApiKey}
+        initialValue={defaultValue}
         init={{
           initialValue: defaultValue,
           height:500,
